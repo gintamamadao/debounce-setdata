@@ -24,7 +24,9 @@ function debounce(context, options) {
             if (typeof context.setData === "function" && keys.length > 0) {
                 context.setData(cache, function() {
                     cbArr.forEach(function(cbItem) {
-                        typeof cbItem === "function" && cbItem();
+                        setTimeout(function() {
+                            typeof cbItem === "function" && cbItem();
+                        }, 0);
                     });
                     cbArr = [];
                 });
