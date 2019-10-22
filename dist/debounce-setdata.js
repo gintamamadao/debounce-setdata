@@ -66,6 +66,7 @@ function debounce(context, options) {
   options = options || {};
   var timeoutId;
   var cache = {};
+  var cbArr = [];
   var lastTrigger = new Date().getTime();
   var wait = +options.wait || 0;
 
@@ -89,7 +90,12 @@ function debounce(context, options) {
       var keys = Object.keys(cache);
 
       if (typeof context.setData === "function" && keys.length > 0) {
-        context.setData(cache, cb);
+        context.setData(cache, function () {
+          cbArr.forEach(function (cbItem) {
+            typeof cbItem === "function" && cbItem();
+          });
+          cbArr = [];
+        });
       }
 
       cache = {};
@@ -102,6 +108,11 @@ function debounce(context, options) {
     }
 
     cache = Object.assign(cache, data);
+
+    if (typeof cb === "function") {
+      cbArr.push(cb);
+    }
+
     timeoutId = setTimeout(later, triggerWait);
   };
 

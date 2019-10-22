@@ -24,12 +24,12 @@ function debounce(context, options) {
             if (typeof context.setData === "function" && keys.length > 0) {
                 context.setData(cache, function() {
                     cbArr.forEach(function(cbItem) {
-                        cbItem();
+                        typeof cbItem === "function" && cbItem();
                     });
+                    cbArr = [];
                 });
             }
             cache = {};
-            cbArr = [];
         };
         for (const key in data) {
             const value = data[key];
