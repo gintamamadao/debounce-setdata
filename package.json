@@ -18,6 +18,13 @@
         "url": "https://github.com/gintamamadao/debounce-setdata/issues"
     },
     "homepage": "https://github.com/gintamamadao/debounce-setdata#readme",
+    "keywords": [
+        "wxapp",
+        "setData",
+        "debounce",
+        "throttle",
+        "performance"
+    ],
     "devDependencies": {
         "@babel/core": "^7.4.5",
         "@babel/preset-env": "^7.4.5",
