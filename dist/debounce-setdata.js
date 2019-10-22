@@ -77,6 +77,7 @@ function debounce(context, options) {
 
     if (immediate) {
       context.setData(data, cb);
+      return;
     }
 
     if (timeoutId) {

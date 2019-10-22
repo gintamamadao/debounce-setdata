@@ -14,6 +14,7 @@ function debounce(context, options) {
         const immediate = setOpts.immediate;
         if (immediate) {
             context.setData(data, cb);
+            return;
         }
         if (timeoutId) {
             clearTimeout(timeoutId);
