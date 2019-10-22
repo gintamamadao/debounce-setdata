@@ -8,8 +8,13 @@ function debounce(context, options) {
     let cbArr = [];
     let lastTrigger = new Date().getTime();
     const wait = +options.wait || 0;
-    const dSetData = function(data, cb) {
+    const dSetData = function(data, cb, setOpts) {
         data = data || {};
+        setOpts = setOpts || {};
+        const immediate = setOpts.immediate;
+        if (immediate) {
+            context.setData(data, cb);
+        }
         if (timeoutId) {
             clearTimeout(timeoutId);
         }
