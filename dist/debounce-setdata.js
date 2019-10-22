@@ -70,8 +70,14 @@ function debounce(context, options) {
   var lastTrigger = new Date().getTime();
   var wait = +options.wait || 0;
 
-  var dSetData = function dSetData(data, cb) {
+  var dSetData = function dSetData(data, cb, setOpts) {
     data = data || {};
+    setOpts = setOpts || {};
+    var immediate = setOpts.immediate;
+
+    if (immediate) {
+      context.setData(data, cb);
+    }
 
     if (timeoutId) {
       clearTimeout(timeoutId);
