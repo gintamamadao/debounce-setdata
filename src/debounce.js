@@ -67,6 +67,12 @@ function debounce(context, options) {
     _setData.cancel = function() {
         clearTimeout(timeoutId);
         timeoutId = null;
+        cache = {};
+        cbArr = [];
+    };
+
+    _setData.immediate = function() {
+        later();
     };
 
     return _setData;
