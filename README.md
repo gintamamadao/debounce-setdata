@@ -39,9 +39,11 @@ Page({
 -   `setData` 操作将被延时，最大延时时间由所设置的 `wait` 的值决定。
 -   `this.data` 的修改是即时的，即数据将即时更新到 `this.data`，所以事实上只有视图的更新是被延时的。
 
+---
+
 # Api
 
-## debounce-setdata
+## `debounce-setdata`
 
 _参数_
 
@@ -65,7 +67,9 @@ this._setData = debounceSetdata(this, {
 });
 ```
 
-## 封装后的 `setData` 函数
+---
+
+## `debounce-setdata` 返回的 `setData` 函数
 
 _参数_
 

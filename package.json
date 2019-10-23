@@ -1,6 +1,6 @@
 {
     "name": "debounce-setdata",
-    "version": "1.0.2",
+    "version": "1.0.3",
     "description": "debounce-setdata",
     "main": "./dist/debounce-setdata.js",
     "scripts": {
