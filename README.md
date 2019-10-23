@@ -43,7 +43,7 @@ Page({
 
 # Api
 
-## `debounce-setdata`
+### `debounce-setdata`
 
 _参数_
 
@@ -69,7 +69,7 @@ this._setData = debounceSetdata(this, {
 
 ---
 
-## `debounce-setdata` 返回的 `setData` 函数
+### `debounce-setdata` 返回的 `_setData`
 
 _参数_
 
