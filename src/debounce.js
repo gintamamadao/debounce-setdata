@@ -7,7 +7,10 @@ function debounce(context, options) {
     let cache = {};
     let cbArr = [];
     let lastTrigger = new Date().getTime();
-    const wait = +options.wait || 0;
+    let wait = +options.wait || 0;
+    if (isNaN(wait) || wait < 0) {
+        wait = 0;
+    }
     const later = function() {
         const keys = Object.keys(cache);
         if (typeof context.setData === "function" && keys.length > 0) {
@@ -33,16 +36,21 @@ function debounce(context, options) {
             context.setData(data, cb);
             return;
         }
+
         if (timeoutId) {
             clearTimeout(timeoutId);
         } else {
             lastTrigger = now;
         }
+
         const diffTime = now - lastTrigger;
-        let triggerWait = wait - diffTime;
-        if (diffTime < 0 || triggerWait < 0 || triggerWait > wait) {
+        let triggerWait = 0;
+        if (diffTime < 0 || diffTime > wait) {
             triggerWait = 0;
+        } else {
+            triggerWait = wait - diffTime;
         }
+
         lastTrigger = now;
         for (const key in data) {
             const value = data[key];

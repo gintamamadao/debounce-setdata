@@ -70,6 +70,10 @@ function debounce(context, options) {
   var lastTrigger = new Date().getTime();
   var wait = +options.wait || 0;
 
+  if (isNaN(wait) || wait < 0) {
+    wait = 0;
+  }
+
   var later = function later() {
     var keys = Object.keys(cache);
 
@@ -107,10 +111,12 @@ function debounce(context, options) {
     }
 
     var diffTime = now - lastTrigger;
-    var triggerWait = wait - diffTime;
+    var triggerWait = 0;
 
-    if (diffTime < 0 || triggerWait < 0 || triggerWait > wait) {
+    if (diffTime < 0 || diffTime > wait) {
       triggerWait = 0;
+    } else {
+      triggerWait = wait - diffTime;
     }
 
     lastTrigger = now;
