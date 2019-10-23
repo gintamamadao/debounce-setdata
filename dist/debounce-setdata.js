@@ -68,6 +68,7 @@ function debounce(context, options) {
   var cache = {};
   var cbArr = [];
   var lastTrigger = new Date().getTime();
+  var isShowLog = options.isShowLog;
   var wait = +options.wait || 0;
 
   if (isNaN(wait) || wait < 0) {
@@ -79,6 +80,11 @@ function debounce(context, options) {
 
     if (typeof context.setData === "function" && keys.length > 0) {
       context.setData(cache, function () {
+        if (isShowLog && console && console.log) {
+          var time = new Date().getTime();
+          console.log("".concat(time, "\uFF1AsetData over"));
+        }
+
         cbArr.forEach(function (cbItem) {
           setTimeout(function () {
             typeof cbItem === "function" && cbItem();
