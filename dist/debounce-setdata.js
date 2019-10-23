@@ -14,7 +14,8 @@ function _typeof(obj) {
   return _typeof(obj);
 }
 
-var arrItemReg = /^(\S+)\[(\d)+\]$/;
+var indexStrItemReg = /\[\d+\]/g;
+var indexNumberReg = /^\[(\d)+\]$/;
 var Util = {
   safeEval: function safeEval(key, value, obj) {
     obj = obj || {};
@@ -22,30 +23,46 @@ var Util = {
     var len = keys.length;
     var lastObj = obj;
     keys.forEach(function (keyItem, index) {
-      var keyMatch = keyItem.match(arrItemReg);
+      var indexStrItems = keyItem.match(indexStrItemReg);
 
-      if (keyMatch) {
-        var arrName = keyMatch[1];
-        var arrIndex = keyMatch[2];
+      if (indexStrItems && indexStrItems.length > 0) {
+        var firstIndexStr = indexStrItems[0];
+        var arrKeyIndex = keyItem.indexOf(firstIndexStr);
+        var arrKey = keyItem.slice(0, arrKeyIndex);
 
-        if (!Array.isArray(lastObj[arrName])) {
-          lastObj[arrName] = [];
+        if (!Array.isArray(lastObj[arrKey])) {
+          lastObj[arrKey] = [];
         }
 
-        if (index === len - 1) {
-          lastObj[arrName][arrIndex] = value;
-          return;
-        }
+        lastObj = lastObj[arrKey];
+        indexStrItems.forEach(function (indexStr, indexStrIndex) {
+          var indexNumInfo = indexStr.match(indexNumberReg);
+          var indexNum = indexNumInfo[1];
 
-        if (_typeof(lastObj[arrName][arrIndex]) !== "object") {
-          lastObj[arrName][arrIndex] = {};
-        }
+          if (indexStrIndex >= indexStrItems.length - 1) {
+            if (index >= len - 1) {
+              lastObj[indexNum] = value;
+            } else {
+              if (_typeof(lastObj[indexNum]) !== "object") {
+                lastObj[indexNum] = {};
+              }
 
-        lastObj = lastObj[arrName][arrIndex];
+              lastObj = lastObj[indexNum];
+            }
+
+            return;
+          }
+
+          if (!Array.isArray(lastObj[indexNum])) {
+            lastObj[indexNum] = [];
+          }
+
+          lastObj = lastObj[indexNum];
+        });
         return;
       }
 
-      if (index === len - 1) {
+      if (index >= len - 1) {
         lastObj[keyItem] = value;
         return;
       }

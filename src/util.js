@@ -1,4 +1,5 @@
-const arrItemReg = /^(\S+)\[(\d)+\]$/;
+const indexStrItemReg = /\[\d+\]/g;
+const indexNumberReg = /^\[(\d)+\]$/;
 
 const Util = {
     safeEval(key, value, obj) {
@@ -7,24 +8,37 @@ const Util = {
         const len = keys.length;
         let lastObj = obj;
         keys.forEach(function(keyItem, index) {
-            const keyMatch = keyItem.match(arrItemReg);
-            if (keyMatch) {
-                const arrName = keyMatch[1];
-                const arrIndex = keyMatch[2];
-                if (!Array.isArray(lastObj[arrName])) {
-                    lastObj[arrName] = [];
+            const indexStrItems = keyItem.match(indexStrItemReg);
+            if (indexStrItems && indexStrItems.length > 0) {
+                const firstIndexStr = indexStrItems[0];
+                const arrKeyIndex = keyItem.indexOf(firstIndexStr);
+                const arrKey = keyItem.slice(0, arrKeyIndex);
+                if (!Array.isArray(lastObj[arrKey])) {
+                    lastObj[arrKey] = [];
                 }
-                if (index === len - 1) {
-                    lastObj[arrName][arrIndex] = value;
-                    return;
-                }
-                if (typeof lastObj[arrName][arrIndex] !== "object") {
-                    lastObj[arrName][arrIndex] = {};
-                }
-                lastObj = lastObj[arrName][arrIndex];
+                lastObj = lastObj[arrKey];
+                indexStrItems.forEach(function(indexStr, indexStrIndex) {
+                    const indexNumInfo = indexStr.match(indexNumberReg);
+                    const indexNum = indexNumInfo[1];
+                    if (indexStrIndex >= indexStrItems.length - 1) {
+                        if (index >= len - 1) {
+                            lastObj[indexNum] = value;
+                        } else {
+                            if (typeof lastObj[indexNum] !== "object") {
+                                lastObj[indexNum] = {};
+                            }
+                            lastObj = lastObj[indexNum];
+                        }
+                        return;
+                    }
+                    if (!Array.isArray(lastObj[indexNum])) {
+                        lastObj[indexNum] = [];
+                    }
+                    lastObj = lastObj[indexNum];
+                });
                 return;
             }
-            if (index === len - 1) {
+            if (index >= len - 1) {
                 lastObj[keyItem] = value;
                 return;
             }
