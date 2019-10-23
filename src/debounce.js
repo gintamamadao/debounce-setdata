@@ -7,7 +7,7 @@ function debounce(context, options) {
     let cache = {};
     let cbArr = [];
     let lastTrigger = new Date().getTime();
-    let isShowLog = options.isShowLog;
+    let showEndTime = options.showEndTime;
     let wait = +options.wait || 0;
     if (isNaN(wait) || wait < 0) {
         wait = 0;
@@ -16,7 +16,7 @@ function debounce(context, options) {
         const keys = Object.keys(cache);
         if (typeof context.setData === "function" && keys.length > 0) {
             context.setData(cache, function() {
-                if (isShowLog && console && typeof console.log === "function") {
+                if (showEndTime && console && typeof console.log === "function") {
                     const time = new Date().getTime();
                     console.log(`SetData End Time：${time}`);
                 }

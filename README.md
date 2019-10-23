@@ -55,7 +55,8 @@ this._setData = debounceSetdata(context, options);
 
 > options (Object): 配置信息。配置说明：
 >
-> -   wait —— 表示归并多少毫秒内的 setData 操作;
+> -   wait: number, 表示归并多少毫秒内的 setData 操作;
+> -   showEndTime：boolean, 默认为 false，如果为 true，则在后台输出每一次原生 `setData` 执行完成时的时间戳;
 
 _返回_
 
