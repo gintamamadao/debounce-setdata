@@ -48,16 +48,18 @@ Page({
 _参数_
 
 ```js
-debounceSetdata(context, options);
+this._setData = debounceSetdata(context, options);
 ```
 
 > context (Object): `setData` 的主体，可以是小程序的页面对象或者组件对象。
 
-> options (Object): 配置信息。属性说明：wait —— 表示归并多少毫秒内的 setData 操作。
+> options (Object): 配置信息。配置说明：
+>
+> -   wait —— 表示归并多少毫秒内的 setData 操作;
 
 _返回_
 
-> 一个具有节流防抖功能的 `setData` 函数
+> 一个具有节流防抖功能的 `_setData` 函数
 
 _例子_
 
@@ -79,9 +81,11 @@ this._setData(data, cb, options);
 
 > data (Object): 要修改的数据，。
 
-> cb (Function): `setData` 操作结束时的回调函数。
+> cb (Function): 即小程序原生的 `setData` 操作结束时的回调函数，归并 `setData` 操作后，回调函数也会放进一个数组里，直到 `setData` 结束后执行。
 
-> options (Object): 配置信息。属性说明：immediate —— 默认为 false, 如果为 true，则立即执行 `setData` 操作，即和原生的 `setData` 一样的效果。
+> options (Object): 配置信息。属性说明：
+>
+> -   immediate —— 默认为 false, 如果为 true，则立即执行小程序原生的 `setData` 操作；
 
 _例子_
 
@@ -91,10 +95,15 @@ this._setData(
         name: "名字"
     },
     function() {
-        console.log("setData over");
+        console.log("setData callback");
+    },
+    {
+        immediate: true
     }
 );
 ```
+
+---
 
 # License (MIT)
 
