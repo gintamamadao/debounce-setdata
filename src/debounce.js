@@ -18,7 +18,7 @@ function debounce(context, options) {
             context.setData(cache, function() {
                 if (isShowLog && console && typeof console.log === "function") {
                     const time = new Date().getTime();
-                    console.log(`${time}：setData over`);
+                    console.log(`SetData End Time：${time}`);
                 }
                 cbArr.forEach(function(cbItem) {
                     setTimeout(function() {

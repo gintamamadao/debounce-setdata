@@ -80,9 +80,9 @@ function debounce(context, options) {
 
     if (typeof context.setData === "function" && keys.length > 0) {
       context.setData(cache, function () {
-        if (isShowLog && console && console.log) {
+        if (isShowLog && console && typeof console.log === "function") {
           var time = new Date().getTime();
-          console.log("".concat(time, "\uFF1AsetData over"));
+          console.log("SetData End Time\uFF1A".concat(time));
         }
 
         cbArr.forEach(function (cbItem) {
