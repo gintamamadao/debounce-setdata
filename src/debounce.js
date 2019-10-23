@@ -8,37 +8,42 @@ function debounce(context, options) {
     let cbArr = [];
     let lastTrigger = new Date().getTime();
     const wait = +options.wait || 0;
-    const dSetData = function(data, cb, setOpts) {
+    const later = function() {
+        const keys = Object.keys(cache);
+        if (typeof context.setData === "function" && keys.length > 0) {
+            context.setData(cache, function() {
+                cbArr.forEach(function(cbItem) {
+                    setTimeout(function() {
+                        typeof cbItem === "function" && cbItem();
+                    }, 0);
+                });
+                cbArr = [];
+            });
+        }
+        cache = {};
+        clearTimeout(timeoutId);
+        timeoutId = null;
+    };
+    const _setData = function(data, cb, setOpts) {
         data = data || {};
         setOpts = setOpts || {};
         const immediate = setOpts.immediate;
+        const now = new Date().getTime();
         if (immediate) {
             context.setData(data, cb);
             return;
         }
         if (timeoutId) {
             clearTimeout(timeoutId);
+        } else {
+            lastTrigger = now;
         }
-        const now = new Date().getTime();
-        let triggerWait = wait - (now - lastTrigger);
-        if (triggerWait < 0 || triggerWait > wait) {
+        const diffTime = now - lastTrigger;
+        let triggerWait = wait - diffTime;
+        if (diffTime < 0 || triggerWait < 0 || triggerWait > wait) {
             triggerWait = 0;
         }
         lastTrigger = now;
-        const later = function() {
-            const keys = Object.keys(cache);
-            if (typeof context.setData === "function" && keys.length > 0) {
-                context.setData(cache, function() {
-                    cbArr.forEach(function(cbItem) {
-                        setTimeout(function() {
-                            typeof cbItem === "function" && cbItem();
-                        }, 0);
-                    });
-                    cbArr = [];
-                });
-            }
-            cache = {};
-        };
         for (const key in data) {
             const value = data[key];
             const contextData = context.data;
@@ -51,12 +56,12 @@ function debounce(context, options) {
         timeoutId = setTimeout(later, triggerWait);
     };
 
-    dSetData.cancel = function() {
+    _setData.cancel = function() {
         clearTimeout(timeoutId);
         timeoutId = null;
     };
 
-    return dSetData;
+    return _setData;
 }
 
 module.exports = debounce;

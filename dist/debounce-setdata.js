@@ -70,10 +70,30 @@ function debounce(context, options) {
   var lastTrigger = new Date().getTime();
   var wait = +options.wait || 0;
 
-  var dSetData = function dSetData(data, cb, setOpts) {
+  var later = function later() {
+    var keys = Object.keys(cache);
+
+    if (typeof context.setData === "function" && keys.length > 0) {
+      context.setData(cache, function () {
+        cbArr.forEach(function (cbItem) {
+          setTimeout(function () {
+            typeof cbItem === "function" && cbItem();
+          }, 0);
+        });
+        cbArr = [];
+      });
+    }
+
+    cache = {};
+    clearTimeout(timeoutId);
+    timeoutId = null;
+  };
+
+  var _setData = function _setData(data, cb, setOpts) {
     data = data || {};
     setOpts = setOpts || {};
     var immediate = setOpts.immediate;
+    var now = new Date().getTime();
 
     if (immediate) {
       context.setData(data, cb);
@@ -82,33 +102,18 @@ function debounce(context, options) {
 
     if (timeoutId) {
       clearTimeout(timeoutId);
+    } else {
+      lastTrigger = now;
     }
 
-    var now = new Date().getTime();
-    var triggerWait = wait - (now - lastTrigger);
+    var diffTime = now - lastTrigger;
+    var triggerWait = wait - diffTime;
 
-    if (triggerWait < 0 || triggerWait > wait) {
+    if (diffTime < 0 || triggerWait < 0 || triggerWait > wait) {
       triggerWait = 0;
     }
 
     lastTrigger = now;
-
-    var later = function later() {
-      var keys = Object.keys(cache);
-
-      if (typeof context.setData === "function" && keys.length > 0) {
-        context.setData(cache, function () {
-          cbArr.forEach(function (cbItem) {
-            setTimeout(function () {
-              typeof cbItem === "function" && cbItem();
-            }, 0);
-          });
-          cbArr = [];
-        });
-      }
-
-      cache = {};
-    };
 
     for (var key in data) {
       var value = data[key];
@@ -125,12 +130,12 @@ function debounce(context, options) {
     timeoutId = setTimeout(later, triggerWait);
   };
 
-  dSetData.cancel = function () {
+  _setData.cancel = function () {
     clearTimeout(timeoutId);
     timeoutId = null;
   };
 
-  return dSetData;
+  return _setData;
 }
 
 var debounce_1 = debounce;
