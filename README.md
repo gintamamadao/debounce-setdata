@@ -80,7 +80,7 @@ _参数_
 this._setData(data, cb, options);
 ```
 
-> data (Object): 要修改的数据，。
+> data (Object): 要修改的数据。
 >
 > _和原生 `setData` 一样，支持 `key` 以数据路径的形式给出，如 array[2].message，不需要在 this.data 中预先定义_
 
