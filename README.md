@@ -81,6 +81,8 @@ this._setData(data, cb, options);
 ```
 
 > data (Object): 要修改的数据，。
+>
+> _和原生 `setData` 一样，支持 `key` 以数据路径的形式给出，如 array[2].message，不需要在 this.data 中预先定义_
 
 > cb (Function): 即小程序原生的 `setData` 操作结束时的回调函数，归并 `setData` 操作后，回调函数也会放进一个数组里，直到 `setData` 结束后执行。
 
