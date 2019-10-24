@@ -36,8 +36,8 @@ Page({
 
 **注意事项**
 
--   `setData` 操作将被延时，最大延时时间由所设置的 `wait` 的值决定。
--   `this.data` 的修改是即时的，即数据将即时更新到 `this.data`，所以事实上只有视图的更新是被延时的。
+> -   `setData` 操作将被延时，最大延时时间由所设置的 `wait` 的值决定。
+> -   `this.data` 的修改是即时的，即数据将即时更新到 `this.data`，所以事实上只有视图的更新是被延时的。
 
 ---
 
@@ -53,7 +53,7 @@ this._setData = debounceSetdata(context, options);
 
 > context (Object): `setData` 的主体，可以是小程序的页面对象或者组件对象。
 
-> options (Object): 配置信息。配置说明：
+> options (Object): 选项。选项配置说明：
 >
 > -   `wait`—— Number, 表示归并多少毫秒内的 setData 操作;
 > -   `showEndTime`—— Boolean, 默认为 false，如果为 true，则在后台输出每一次原生 `setData` 执行完成时的时间戳;
@@ -66,7 +66,8 @@ _例子_
 
 ```js
 this._setData = debounceSetdata(this, {
-    wait: 100
+    wait: 100,
+    showEndTime: true
 });
 ```
 
@@ -86,7 +87,7 @@ this._setData(data, cb, options);
 
 > cb (Function): 即小程序原生的 `setData` 操作结束时的回调函数，归并 `setData` 操作后，回调函数也会放进一个数组里，直到 `setData` 结束后执行。
 
-> options (Object): 配置信息。属性说明：
+> options (Object): 选项。选项属性说明：
 >
 > -   immediate —— 默认为 false, 如果为 true，则立即执行小程序原生的 `setData` 操作；
 
