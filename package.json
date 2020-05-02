@@ -1,6 +1,6 @@
 {
     "name": "debounce-setdata",
-    "version": "1.1.4",
+    "version": "1.1.5",
     "description": "对微信小程序 setData 的防抖节流封装",
     "main": "./dist/debounce-setdata.js",
     "scripts": {
