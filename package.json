@@ -1,8 +1,12 @@
 {
     "name": "debounce-setdata",
-    "version": "1.1.5",
+    "version": "1.1.9",
     "description": "对微信小程序 setData 的防抖节流封装",
     "main": "./dist/debounce-setdata.js",
+    "types": "./dist/index.d.ts",
+    "files": [
+        "dist/"
+    ],
     "scripts": {
         "test": "jest",
         "dev": "node_modules/.bin/rollup -c ./build/rollup.dev.config.js -w",
@@ -31,5 +35,8 @@
         "rollup": "^1.14.3",
         "rollup-plugin-babel": "^4.3.2",
         "rollup-plugin-commonjs": "^10.0.0"
+    },
+    "dependencies": {
+        "miniprogram-api-typings": "^2.11.0"
     }
 }
